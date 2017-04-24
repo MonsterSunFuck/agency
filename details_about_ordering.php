@@ -33,13 +33,9 @@
 	$dimensions = mysql_query("SELECT * FROM dimensions");
 	$unit = mysql_query("SELECT id, unit FROM dimensions");
 	$order_statuses = mysql_query("SELECT * FROM order_statuses");
-	/*$q1 = mysql_fetch_array($type_advertising);
-	$q2 = mysql_fetch_array($dimensions);
-	var_dump($q1);echo '<br>';
-	var_dump($q2);echo '<br>';*/
-	while ($value = mysql_fetch_array($order_condition)) {
+	$value = mysql_fetch_array($order_condition);
 		echo '
-			<form class="order_condition" method="post" action="">
+			<form class="order_condition" method="post" action="edit_order.php">
 				<input class="withtext" value="'.$value[1].'" placeholder="Имя клиента" title="Имя клиента" readonly><br>
 				<input class="withtext" name="client_phone" value="'.$value[2].'" placeholder="Номер клиента" title="Номер клиента"><br>
 				<input class="withtext" name="product_name" value="'.$value[3].'" placeholder="Название заказа" title="Название заказа"><br>
@@ -54,7 +50,7 @@
 						echo '<option value="'.$type[0].'">'.$type[1].'</option>';
 					}
 				}
-			echo '
+		echo '
 				</select><br>
 				<select class="withtext" name="dimension">';
 				while($dimension = mysql_fetch_array($dimensions)){
@@ -65,7 +61,7 @@
 						echo '<option value="'.$dimension[0].'">'.$dimension[3].'x'.$dimension[4].'</option>';
 					}
 				}
-			echo '
+		echo '
 				</select><br>
 				<select class="withtext" name="unit">';
 				while($un = mysql_fetch_array($unit)){
@@ -108,15 +104,20 @@
 		echo '
 				<br>
 				<select class="withtext" name="work_status">';
-
-				<input class="withtext" name="" value="'.$value[18].'" placeholder="Статус работы" title="Статус работы"><br>
-
+				while($status = mysql_fetch_array($order_statuses)){
+					if($status[1] == $value[18]){
+						echo '<option value="'.$status[0].'" selected>'.$status[1].'</option>';
+					}
+					else{
+						echo '<option value="'.$status[0].'">'.$status[1].'</option>';
+					}
+				}
 		echo '
+				</select><br>
 				<input type="hidden" value="'.$value[0].'" name="order_id">
 				<input class="withtext" type="submit" value="Изменить">
 			</form>
 		';
-	}
 ?>
 	</div>
 </div>
